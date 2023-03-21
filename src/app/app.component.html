@@ -1,0 +1,32 @@
+
+<mgl-map
+  [style]="
+        'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL'
+      "
+  [zoom]="[10]"
+  [center]="[-103.59179687498357, 40.66995747013945]"
+>
+  <ng-container *ngIf="earthquakes">
+    <mgl-geojson-source
+      #clusterComponent
+      id="earthquakes"
+      [data]="earthquakes"
+      [cluster]="true"
+      [clusterRadius]="50"
+      [clusterMaxZoom]="14"
+    ></mgl-geojson-source>
+    <mgl-markers-for-clusters source="earthquakes">
+        <ng-template mglPoint let-feature> Marker! {{ feature.properties?.point_count }}</ng-template>
+      <ng-template mglClusterPoint let-feature>
+        <div
+          class="marker-cluster"
+          (click)="selectCluster($event, feature)">
+          {{ feature.properties?.point_count }}
+        </div>
+      </ng-template>
+    </mgl-markers-for-clusters>
+    <mgl-popup *ngIf="selectedCluster">
+     selected!!!
+    </mgl-popup>
+  </ng-container>
+</mgl-map>
